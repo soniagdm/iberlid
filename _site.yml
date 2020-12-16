@@ -1,0 +1,29 @@
+name: "IBERLID"                                  
+output_dir: "."
+navbar:
+  left:
+    - text: "IBERLID"
+      href: index.html
+      font-size: 25
+    - text: "       "
+    - text: "Geological Samples"
+      icon: glyphicon glyphicon-globe
+      href: geological.html
+    - text: "Archaeological Samples"
+      icon: glyphicon glyphicon-king
+      href: archaeological.html
+    - text: "Filtered Samples"
+      icon: glyphicon glyphicon-ok
+      href: filtered.html  
+
+  right:
+    - icon: fa-envelope-o
+      href: mailto:sonia.gdm@ehu.eus                     
+output:
+  html_document:
+    theme: flatly
+    toc:  yes
+    toc_float:  yes
+    toc_depth: 5
+    highlight: textmate
+    self_contained: TRUE

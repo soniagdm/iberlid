@@ -1,0 +1,148 @@
+---
+title: "Welcome to IBERLID"
+
+---
+
+```{r setup, include=FALSE}
+library(openxlsx) #Neccesary for opening xlsx file
+library(dplyr) #Neccesary for recoding variables. 
+library(crosstalk)##Neccesary for activity
+library(leaflet)
+library(flexdashboard)
+archae= read.csv("data/archae.simp.csv")
+geol= read.csv("data/geol.simp.csv")
+```
+
+
+
+IBERLID is an interactive database of Pb isotopic analyses in geological and archaeological materials in the Iberian Peninsula.
+
+Here are compiled near 3000 Pb isotopic analyses in minerals, artefacts and rocks in a standardized database allowing sample selection, grouping and ploting. 
+
+### Geolology of the Iberian Peninsula
+
+Despite its relatively small size, the geology of the Iberian Peninsula is complex as it includes from rocks generated in superficial sedimentary conditions to other obducted from the upper mantle exposing rocks that cover the last 600 Ma of Earth’s history. This complexity is also reflected in the ample typology of ore mineral deposits. Not only the types, but also the volume of the mineral deposits is widely variable in the Iberian Peninsula. There exist magmatic-related (both plutonic and volcanic), hydrothermal (vein, skarn and shear-zone related), sedimentary, stratabound… mineral deposits that range from scattered and artisan exploitations to world-class deposits. Besides that, different minerals have been exploited during the long history of mining activity in the Peninsula, including Pb minerals, Cu minerals, silver and gold, extracted in some mines since, at least, the 3rd Milenium BC and have been classical sources of ores for metallic tools in numerous archaeological sites outside Iberia.
+
+Pb isotope analyses have been intensively applied in studies of provenance of mainly metallic archaeological artefacts since 60s. They are a very useful tools because their variations are rooted in the local geological history, although their use needs a complete reference Pb isotopic database with control of the geological and mineralogical significance.
+
+In this web site there are compiled more near 3000 samples from the Iberian Peninsula, including not only geographical information also geological, mineralogical and analytical data are provided.
+
+Data are organized in different tabs:
+
+   _ Geological samples, including all compiled samples of different type of minerals, ores and also whole rocks. 
+   
+   _ Archaeological samples, including all metallic artefacts and metals or minerals transformed by metallurgical processes.
+   
+   _ Filtered data, where only appear selected samples after a thoroughly study of data. 
+   
+   _ A specific tab for complete cites used in the compilation with corresponding code used in database.
+   
+   _ The last tab includes some additional material where crude data are accessible and another tab where some additional material is provided in different formats. 
+
+Complete explanation about data standardization, variables used and calculations will be shortly published.  
+  
+### Location of samples
+
+```{r interactivemap, echo=FALSE}
+#Sample map distribution by new dataframe.
+{library(leaflet)
+leaflet(geol) %>% addTiles() %>% addProviderTiles(providers$OpenTopoMap) %>% 
+  setView(lng = -4, lat = 40, zoom = 5)%>%
+  addCircleMarkers(data=geol, group="Geological samples",
+                   lng=geol$decimallongitude, lat=geol$decimallatitude, 
+                   label=geol$code, color = "red", radius = 2,
+                   popup = paste0(as.character(geol$reference)),
+                   labelOptions = labelOptions(noHide = F,
+                                               direction = 'auto'))%>% 
+  addLegend(position = "bottomleft", labels = "Geological samples",colors = "red")%>%
+  addCircleMarkers(data=archae, group="Archaeological samples",
+                   lng=archae$decimallongitude, lat=archae$decimallatitude, 
+                   label=archae$code, color = "blue", radius = 2,
+                   popup = paste0(as.character(archae$reference)),
+                   labelOptions = labelOptions(noHide = F,
+                                               direction = 'auto'))%>%
+  addLegend(position = "bottomleft", labels = "Archaeological samples",colors = "blue")%>%
+  addLayersControl(overlayGroups= c("Geological samples", "Archaeological samples"))
+}
+```
+
+### How to use IBERLID
+
+IBERLID is a flexible database that can be used directly online or can be download for local user. 
+
+#### ONLINE USE
+
+Online data allow to inspect the isotopic ratios of selected samples in different graphs and tables. The selection can be made by selecting sample characteristics or directly in a map. 
+
+3 tabs are designed for online use:
+
+- [Geological Samples](geological.html) compiles analyses of minerals and rocks directly related to geology to the location. 
+- [Archaeological Samples](archaeological.html) compiles analyses of artefacts or other materials handled located in archaeological sites.
+- [Filtered Samples](filtered.html) contains also geological and archaeological samples although some data have been excluded, due to anomalies.  
+
+#### DOWNLOAD DATA
+
+Besides the online option for data use all of data can be download for personalized use. 
+
+Here you will find different options:
+
+##### Whole database
+
+###### In xlsx format
+
+The whole database can be downloaded in an Excel version spreadsheet, with different tabs for each reference used and an additional tab for general information. 
+This archive is accesible here: http://www.ehu.eus/ibercron/data/IBERLID.xlsx 
+
+###### In csv format
+
+- The same data, but with csv format and with all of compiled samples in a unique spreadsheet and without additional information is provided.
+This archive can be download from the next link: http://www.ehu.eus/ibercron/data/wholedatabase.csv 
+
+##### Geological data
+
+- The database corresponding only to a those materials so-called geologicals, including all of variable considered in the database, is also downloable.
+The corresponding file is here: http://www.ehu.eus/ibercron/data/geological.samples.csv
+
+##### Archaeological data
+
+- The database corresponding only to a those materials so-called archaeological, including all of variable considered in the database, is also downloable.
+The corresponding file is here: http://www.ehu.eus/ibercron/data/wholedatabase_filtered.csv
+
+##### Filtered data
+
+- The wholedatabase in csv format after data filtering for outliers exclusion downloable here:
+http://www.ehu.eus/ibercron/data/archaeological.samples.csv
+
+### References used in the database
+
+In IBERLID are compiled samples from 140 different works. Each article in IBERLID has a code for plots. 
+In the next table appear all of samples with corresponding code. 
+
+```{r refsetup, include=FALSE, echo=FALSE}
+library(openxlsx) #Neccesary for opening xlsx file
+library(dplyr) #Neccesary for recoding variables. 
+library(crosstalk)##Neccesary for activity
+library(leaflet)
+library(flexdashboard)
+
+filename2 <-"data/references.xlsx"
+references=read.xlsx(filename2)
+```
+
+
+```{r refsdatatable, echo=FALSE}
+  DT::datatable(references, 
+                class = "compact",
+                rownames = FALSE,  # remove rownames
+                colnames = c('Ref.Code', 'Citation','Complete reference')
+                )
+```
+
+
+### Contact us
+
+The database is maintained by researchers and technicians in the University of Basque Country. 
+To include your data or correct detected errors you can contact us at sonia.gdm@ehu.eus
+
+
+
